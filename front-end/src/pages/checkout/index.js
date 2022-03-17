@@ -72,14 +72,14 @@ function Checkout() {
   return (
     <div>
       <Header />
-      <table>
+      <table className='checkout-table'>
         <caption>
           <h2>
             Finalizar Pedido
           </h2>
         </caption>
         <thead>
-          <tr>
+          <tr className='checkout-tr'>
             <th>Item</th>
             <th>Descrição</th>
             <th>Quantidade</th>
@@ -151,11 +151,11 @@ function Checkout() {
       </div>
 
       <form className="row" onSubmit={ onSubmitOrder }>
-        <div className="col 50">
+        <div className="col50">
           <h3> Detalhes e Endereço para Entrega</h3>
 
           <label htmlFor="vendedores">
-            P.Vendedora Responsavel
+            {/* P.Vendedora Responsavel */}
 
             <div>
               <select

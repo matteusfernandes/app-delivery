@@ -1,4 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 #btn-finish-order {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #6b6;
   border: 0;
   border-radius: 3px;
@@ -14,12 +22,12 @@
   border: 0;
   border-radius: 3px;
   color: white;
-  font-family: $font-bold;
+  font-family: 'font-bold';
   font-size: 12px;
   padding: 4px 8px;
 }
 
-th {
+.checkout-tr th {
   margin-bottom: 10px;
   padding-bottom: 5px;
 }
@@ -59,24 +67,48 @@ th {
   margin: 30px 3px;
 }
 
-label {
-  display: block;
-  margin: 10px;
-}
-
 .fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin: 10px;
+
 }
 
-.col-50 {
-  flex: 50%;
+.row {
+  display: flex;
+  align-items: center;
+  width: 100vw;
 }
 
-input {
+.col50 {
+  font-family: 'Fredoka', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.col50 div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width:  300px;
+}
+
+.col50 h3 {
+  margin-bottom: 10px;
+  font-size: medium;
+}
+
+.fields input {
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 5px;
-  width: 50%;
+  text-align: center;
 }
 
 .custom-select {
@@ -86,12 +118,28 @@ input {
   display: block;
   font-family: Fredoka , sans-serif;
   height: 34px;
-  width: 30%;
+  width: 190px;
+  text-align: center;
+}
+
+.checkout-table {
+  margin-left: 5%;
+}
+
+.checkout-table caption h2 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: x-large;
+  font-weight: 500;
+  margin: 20px;
 }
 
 @media screen and ( max-width : 375px ) {
 
-  body {
-    font-size: 0.625rem;
+  .checkout-table {
+    font-size: 0.710rem;
+  }
+
+  Header {
+    font-size: 0.750rem;
   }
 }

@@ -1,1 +1,48 @@
-/* CSS da página de Login */
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.container-order-details {
+    font-family: 'Fredoka', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 20px;
+    margin-bottom: 2px;
+    width: 100vw;
+    height: 100vh;
+    /* background-color: aqua; */
+}
+
+.container-order-details nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 60px;
+}
+
+.container-order-details nav p {
+    display: flex;
+    flex-direction: row;
+    margin: 2px;
+}
+
+#delivery-btn {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 500;
+    font-size: small;
+    border: none;
+    background-color: #ffa823;
+    color: white;
+    border-radius: 9px;
+    width: 200px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.table-details {
+    text-align: center;
+}

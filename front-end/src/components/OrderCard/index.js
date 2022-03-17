@@ -6,14 +6,13 @@ import PropTypes from 'prop-types';
 function Card({ id, status, data, value, address, prefix, route }) {
   return (
     <Link key={ id } to={ `${route}${id}` }>
-      <section>
+      <section className='card-section'>
         <div data-testid={ `${prefix}__element-order-id-${id}` }>
-          <p>Pedido</p>
-          <p>{ id }</p>
+        <p>{`Pedido ${id}`}</p>
         </div>
         <div>
-          <div>
-            <div data-testid={ `${prefix}__element-delivery-status-${id}` }>
+          <div className='info-section'>
+            <div className={ status === "Entregue" ? 'order-status-delivered' : 'order-status-pending'} data-testid={ `${prefix}__element-delivery-status-${id}` }>
               { status }
             </div>
             <div data-testid={ `${prefix}__element-order-date-${id}` }>
@@ -22,12 +21,12 @@ function Card({ id, status, data, value, address, prefix, route }) {
             <div data-testid={ `${prefix}__element-card-price-${id}` }>
               { `R$ ${value.replace('.', ',')}` }
             </div>
-          </div>
           { prefix === 'seller_orders' && (
             <div data-testid={ `${prefix}__element-card-address-${id}` }>
               { address }
             </div>
           )}
+          </div>
         </div>
       </section>
     </Link>

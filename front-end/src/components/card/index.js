@@ -2,18 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import './style.css'
 
 function Card({ id, status, data, value, address, prefix, route }) {
   return (
     <Link key={ id } to={ `${route}${id}` }>
-      <section>
+      <section className='card-section'>
         <div data-testid={ `${prefix}__element-order-id-${id}` }>
-          <p>Pedido</p>
-          <p>{ id }</p>
+          <p>{`Pedido ${id}`}</p>
         </div>
         <div>
-          <div>
-            <div data-testid={ `${prefix}__element-delivery-status-${id}` }>
+          <div className='info-section'>
+            <div className={ status === "Entregue" ? 'order-status-delivered' : 'order-status-pending'} data-testid={ `${prefix}__element-delivery-status-${id}` }>
               { status }
             </div>
             <div data-testid={ `${prefix}__element-order-date-${id}` }>

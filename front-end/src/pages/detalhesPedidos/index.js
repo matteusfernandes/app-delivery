@@ -6,6 +6,7 @@ import api from '../../api';
 import Header from '../../components/header';
 import Button from '../../components/button';
 import Table from '../../components/table';
+import './style.css';
 
 function PedidosClienteDetalhes() {
   const loggedUser = useSelector((state) => state.user);
@@ -67,8 +68,8 @@ function PedidosClienteDetalhes() {
   return (
     <>
       <Header />
-      <h2>Detalhe do Pedido</h2>
-      <div>
+      <div className='container-order-details'>
+      <h2>Detalhes do Pedido</h2>
         <nav>
           <p
             data-testid={ `${prefix}__element-order-details-label-order-id` }
@@ -138,9 +139,9 @@ function PedidosClienteDetalhes() {
           order={ order }
         />}
         <p
-          data-testid={ `${prefix}__element-order-total-price` }
+          classname='details-total' data-testid={ `${prefix}__element-order-total-price` }
         >
-          { `Total: ${order && (order.totalPrice.replace('.', ','))}` }
+          { `Total: $${order && (order.totalPrice.replace('.', ','))}` }
         </p>
       </div>
     </>

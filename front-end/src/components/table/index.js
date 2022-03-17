@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 function Table({ prefix, order }) {
   return (
     <div>
-      <table className="table">
+      <table className="table-details">
         <thead>
           <tr>
             <th>Item</th>

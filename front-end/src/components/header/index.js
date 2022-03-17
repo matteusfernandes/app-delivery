@@ -46,7 +46,7 @@ function Header() {
           </div>
         )}
         { role === 'seller' && (
-          <div data-testid="customer_products__element-navbar-link-orders">
+          <div className='orders-seller' data-testid="customer_products__element-navbar-link-orders">
             <Link to="/seller/orders">
               PEDIDOS
             </Link>

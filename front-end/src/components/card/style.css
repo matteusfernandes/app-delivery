@@ -7,7 +7,7 @@
     width: 100vw;
     height: 50px;
     /* border: 1px solid rgb(212, 208, 208); */
-    background-color: aqua;
+    /* background-color: aqua; */
 }
 
 .info-section {
@@ -18,4 +18,12 @@
 
 .info-section div {
     margin: 5px;
+}
+
+.order-status-delivered {
+    color: green;
+}
+
+.order-status-pending {
+    color: #ffa823;
 }

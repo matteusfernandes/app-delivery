@@ -33,21 +33,25 @@ function CardProduto({ id, price, imageUrl, name }) {
   }, [cart, dispatch, id, name, price, quantity]);
 
   return (
-    <div className="container">
-      <p data-testid={ `customer_products__element-card-price-${id}` }>
-        { `R$ ${price.replace('.', ',')}` }
-      </p>
+    <div className="container-card">
+      <div className='container-img'>
       <img
         data-testid={ `customer_products__img-card-bg-image-${id}` }
         src={ imageUrl }
         alt="imagem do produto"
       />
+      </div>
       <div>
+        <div className='name-price'>
         <p data-testid={ `customer_products__element-card-title-${id}` }>
           { name }
+      <p data-testid={ `customer_products__element-card-price-${id}` }>
+        { `R$ ${price.replace('.', ',')}` }
+      </p>
         </p>
-        <p>{ quantity }</p>
-        <div>
+        </div>
+        {/* <p>{ quantity }</p> */}
+        <div className='quantity-buttons'>
           <Button
             label="-"
             name="btn-sub"

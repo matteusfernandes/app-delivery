@@ -1,1 +1,97 @@
-/* CSS da página de Login */
+*{
+    padding: 0;
+    margin: 0;
+}
+
+@font-face {
+    font-family: Kathen;
+    src: url("img/Kathen\ Font\ by\ Situjuh\ \(7NTypes\).otf");
+ }
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap');
+
+.container-login {
+    display: flex;
+    align-items:flex-end;
+    background-image: url("img/drink-vector-free-seamless-pattern1a.png");
+    background-repeat: repeat-x;
+    background-size: 300px;
+    width: max-content;
+    height: 100vh;
+}
+
+/* .logo {
+    position: absolute;
+    font-family: Kathen;
+    top: 10%;
+    left: 30%;
+    font-size: 60px;
+    color:#ffa823;
+    text-shadow: 
+               -2px -2px 2px #041c2c, 
+               -2px 2px 2px #041c2c,                    
+                2px -2px 2px #041c2c,                  
+                2px 2px 2px #041c2c;
+} */
+
+.container-login form {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100vw;
+    background-color: white;
+    height: 61vh;
+}
+
+.container-login form input {
+    font-family: 'Fredoka', sans-serif;
+    border: 1px solid #ffa823;
+    border-radius: 7px;
+    margin: 12px;
+    width: 90vw;
+    height: 28px;
+    text-align: center;
+    font-size:medium
+}
+
+.container-input-login {
+    margin-top: 45px;
+}
+
+.error-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fredoka', sans-serif;
+    color: #041c2c;
+    font-size: medium;
+}
+
+#login-btn {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: large;
+    border: none;
+    background-color: #ffa823;
+    color: white;
+    border-radius: 9px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 100px;
+    height: 40px;
+    cursor: pointer;
+}
+
+#register-btn {
+    font-family: 'Fredoka', sans-serif;
+    border: none;
+    color: #041c2c;
+    font-size: medium;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+::-webkit-input-placeholder {
+    text-align: center;
+ }

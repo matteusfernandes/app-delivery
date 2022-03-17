@@ -9,6 +9,7 @@ import helper from '../../helpers';
 import { loginSchema } from '../../utils/schemas';
 import schemaValidate from '../../utils/schemaValidate';
 import { setUser } from '../../app/slices/user';
+import './style.css';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -67,46 +68,48 @@ function Login() {
   };
 
   return (
-    <form>
-      <div>
-        <Input
-          type="email"
-          label="Email:"
-          value={ email }
-          name="common_login__input-email"
-          onChange={ handleChange }
-          testid="common_login__input-email"
-        />
-        <Input
-          type="password"
-          label="Senha:"
-          value={ password }
-          name="common_login__input-password"
-          onChange={ handleChange }
-          testid="common_login__input-password"
-        />
-      </div>
-      <div>
-        <Button
-          label="Login"
-          name="login-btn"
-          id="login-btn"
-          testid="common_login__button-login"
-          onClick={ handleClick }
-          value={ schemaValidate({ email, password }, loginSchema) }
-        />
-        <Button
-          label="Ainda não tenho conta"
-          name="register-btn"
-          id="register-btn"
-          testid="common_login__button-register"
-          onClick={ handleRegister }
-          value={ false }
-        />
-      </div>
-      { error
-          && <p data-testid="common_login__element-invalid-email">{error.message}</p> }
-    </form>
+    <div className='container-login'>
+      {/* <h1 className='logo'>Trink</h1> */}
+      <form>
+        <div className='container-input-login'>
+          <Input
+            type="email"
+            label="Email"
+            value={ email }
+            name="common_login__input-email"
+            onChange={ handleChange }
+            testid="common_login__input-email"
+          />
+          <Input
+            type="password"
+            label="Senha"
+            value={ password }
+            name="common_login__input-password"
+            onChange={ handleChange }
+            testid="common_login__input-password"
+          />
+        { error
+            && <p 
+            data-testid="common_login__element-invalid-email" className='error-login'>{error.message}</p> }
+        </div>
+          <Button
+            label="Login"
+            name="login-btn"
+            id="login-btn"
+            testid="common_login__button-login"
+            onClick={ handleClick }
+            value={ schemaValidate({ email, password }, loginSchema) }
+          />
+          <Button
+            label="Ainda não tenho conta"
+            name="register-btn"
+            id="register-btn"
+            testid="common_login__button-register"
+            onClick={ handleRegister }
+            value={ false }
+          />
+      </form>
+    </div>
   );
 }
 

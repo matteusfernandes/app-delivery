@@ -6,6 +6,7 @@ import { registerSchema } from '../../utils/schemas';
 import schemaValidate from '../../utils/schemaValidate';
 import api from '../../api';
 import helper from '../../helpers';
+import './style.css'
 
 function Cadastro({ history }) {
   const prefix = 'common_register__';
@@ -37,9 +38,10 @@ function Cadastro({ history }) {
   };
 
   return (
-    <div>
-      <h2>Cadastro</h2>
-      <div>
+    <div className='container-register'>
+      <form>
+      <h1>Registre-se</h1>
+        <div className='container-input-register'>
         <Input
           type="text"
           label="Nome"
@@ -50,7 +52,7 @@ function Cadastro({ history }) {
         />
         <Input
           type="email"
-          label="Email:"
+          label="Email"
           value={ email }
           name="email"
           onChange={ handleChange }
@@ -58,14 +60,15 @@ function Cadastro({ history }) {
         />
         <Input
           type="password"
-          label="Senha:"
+          label="Senha"
           value={ password }
           name="password"
           onChange={ handleChange }
           testid={ `${prefix}input-password` }
-        />
-      </div>
-      <div>
+          />
+          { error
+              && <p data-testid={ `${prefix}element-invalid_register` }>{error.message}</p> }
+        </div>
         <Button
           label="Cadastrar"
           name="register-submit-btn"
@@ -74,9 +77,9 @@ function Cadastro({ history }) {
           onClick={ handleClick }
           value={ schemaValidate({ name, email, password }, registerSchema) }
         />
+      </form>
+      <div className='drink-img-div'>
       </div>
-      { error
-          && <p data-testid={ `${prefix}element-invalid_register` }>{error.message}</p> }
     </div>
   );
 }

@@ -43,7 +43,7 @@ function Produtos() {
   return (
     <>
       <Header />
-      <main className="container">
+      <main className="product-container">
         { products && (
           products.map((product) => (
             <CardProduto

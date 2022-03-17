@@ -1,1 +1,59 @@
-/* CSS da página de Login */
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.container-register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-register form h1 {
+    margin: 30px;
+}
+
+.container-register form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 55vh;
+}
+
+.container-register form input {
+    font-family: 'Fredoka', sans-serif;
+    border: 1px solid #ffa823;
+    border-radius: 7px;
+    margin: 12px;
+    width: 90vw;
+    height: 28px;
+    text-align: center;
+    font-size:medium
+}
+
+#register-submit-btn {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    /* font-size: large; */
+    border: none;
+    background-color: #ffa823;
+    color: white;
+    border-radius: 9px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 100px;
+    height: 70px;
+    cursor: pointer;
+}
+
+.drink-img-div{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    background-image: url("img/drink-vector-free-seamless-pattern1.png");
+    background-size: 300px;
+    background-repeat: repeat-x;
+    width: 100%;
+    height: 400px;
+    bottom: 0;
+}

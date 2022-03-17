@@ -29,18 +29,18 @@ function Header() {
   };
 
   return (
-    <header>
-      <nav>
+    <header className='top-header'>
+      <nav className='nav-header'>
         { role === 'customer' && (
-          <div>
-            <div data-testid="customer_products__element-navbar-link-products">
+          <div className='left-header'>
+            <div className='products-link' data-testid="customer_products__element-navbar-link-products">
               <Link to="/customer/products">
                 PRODUTOS
               </Link>
             </div>
-            <div data-testid="customer_products__element-navbar-link-orders">
+            <div className='orders-link' data-testid="customer_products__element-navbar-link-orders">
               <Link to="/customer/orders">
-                MEUS PEDIDOS
+                <p className='my-orders'>MEUS PEDIDOS</p>
               </Link>
             </div>
           </div>
@@ -52,13 +52,13 @@ function Header() {
             </Link>
           </div>
         )}
-        <div>
-          <div data-testid="customer_products__element-navbar-user-full-name">
+        <div className='right-header'>
+          <div className='username' data-testid="customer_products__element-navbar-user-full-name">
             { userName }
           </div>
           <Link to="/login">
             <Button
-              label="Sair"
+              label="SAIR"
               name="logout-btn"
               id="logout-btn"
               testid="customer_products__element-navbar-link-logout"

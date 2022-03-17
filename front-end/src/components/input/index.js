@@ -5,10 +5,10 @@ function Input({ type, label, value, name, onChange, testid }) {
   return (
     <div>
       <label htmlFor={ name } className="label">
-        {label}
         <input
           type={ type }
           value={ value }
+          placeholder={ label }
           name={ name }
           data-testid={ testid }
           onChange={ onChange }

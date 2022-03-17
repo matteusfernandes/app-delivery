@@ -72,16 +72,20 @@ function Checkout() {
   return (
     <div>
       <Header />
-      <table className="table">
-        <caption>Finalizar Pedido</caption>
+      <table>
+        <caption>
+          <h2>
+            Finalizar Pedido
+          </h2>
+        </caption>
         <thead>
           <tr>
             <th>Item</th>
             <th>Descrição</th>
             <th>Quantidade</th>
-            <th>Valor Unitário</th>
+            <th>Valor</th>
             <th>Sub-total</th>
-            <th>Remover Item</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -93,109 +97,123 @@ function Checkout() {
                 { i + 1 }
               </td>
 
-              <td data-testid={ `customer_checkout__element-order-table-name-${i}` }>
+              <td
+                data-testid={ `customer_checkout__element-order-table-name-${i}` }
+                className="product-title"
+              >
                 { arr.name }
               </td>
 
               <td
                 data-testid={ `customer_checkout__element-order-table-quantity-${i}` }
+                className="product-quantity"
               >
                 { arr.quantity }
               </td>
 
               <td
                 data-testid={ `customer_checkout__element-order-table-unit-price-${i}` }
+                className="product-price"
               >
-                { arr.price.replace('.', ',') }
+                { `R$ ${arr.price.replace('.', ',')}` }
               </td>
 
               <td
                 data-testid={ `customer_checkout__element-order-table-sub-total-${i}` }
+                className="product-line-price"
               >
-                { Number(arr.price * arr.quantity).toFixed(2).replace('.', ',') }
+                { `R$ ${Number(arr.price * arr.quantity).toFixed(2).replace('.', ',')}` }
               </td>
 
               <div>
                 <Button
-                  label="Remover"
+                  label="x"
                   name="Remover"
                   testid={ `customer_checkout__element-order-table-remove-${i}` }
                   onClick={ () => removeItem(i) }
                   value={ false }
                   id="btn-remove"
+                  className="finish-order-btn"
                 />
               </div>
 
             </tr>
           ))}
         </tbody>
-        <tbody>
-          <tr>
-
-            <td data-testid="customer_checkout__element-order-total-price">
-              {` Total: R$ ${Number(totalPrice).toFixed(2).replace('.', ',')}`}
-
-            </td>
-          </tr>
-        </tbody>
       </table>
+      <div className="totals-item">
+        <p
+          data-testid="customer_checkout__element-order-total-price"
+        >
+          {` Total: R$ ${Number(totalPrice).toFixed(2).replace('.', ',')}`}
 
-      <form className="forms" onSubmit={ onSubmitOrder }>
+        </p>
+      </div>
 
-        <h3> Detalhes e Endereço para Entrega</h3>
+      <form className="row" onSubmit={ onSubmitOrder }>
+        <div className="col 50">
+          <h3> Detalhes e Endereço para Entrega</h3>
 
-        <label htmlFor="vendedores">
-          P.Vendedora Responsavel
+          <label htmlFor="vendedores">
+            P.Vendedora Responsavel
 
-          <select
-            id="vendedores"
-            required
-            value={ IdSeller }
-            data-testid="customer_checkout__select-seller"
-            onChange={ ({ target }) => setIdSeller(Number(target.value)) }
-          >
-            <option value=""> selecione o vendedor/a </option>
-            {vendedores.map((vend, index) => (
-
-              <option
-                key={ index }
-                value={ vend.id }
+            <div>
+              <select
+                className="custom-select"
+                id="vendedores"
+                required
+                value={ IdSeller }
+                data-testid="customer_checkout__select-seller"
+                onChange={ ({ target }) => setIdSeller(Number(target.value)) }
               >
-                { vend.name }
+                <option value=""> selecione o vendedor/a </option>
+                {vendedores.map((vend, index) => (
 
-              </option>
+                  <option
+                    key={ index }
+                    value={ vend.id }
+                  >
+                    { vend.name }
 
-            ))}
+                  </option>
 
-          </select>
+                ))}
 
-        </label>
-        Endereço
-        <Input
-          type="text"
-          label=""
-          value={ endereço }
-          name="endereço"
-          onChange={ ({ target }) => setEndereço(target.value) }
-          testid="customer_checkout__input-address"
-        />
-        Número
-        <Input
-          type="number"
-          label=""
-          value={ numero }
-          name="numero"
-          onChange={ ({ target }) => setNumero(target.value) }
-          testid="customer_checkout__input-addressNumber"
-        />
-        <Button
-          label="FINALIZAR PEDIDO"
-          name="FINALIZAR PEDIDO"
-          testid="customer_checkout__button-submit-order"
-          onClick={ onSubmitOrder }
-          value={ false }
-          id="btn-finish-order"
-        />
+              </select>
+            </div>
+
+          </label>
+
+          <div className="fields">
+            Endereço
+            <Input
+              type="text"
+              label=""
+              value={ endereço }
+              name="endereço"
+              onChange={ ({ target }) => setEndereço(target.value) }
+              testid="customer_checkout__input-address"
+            />
+            Número
+            <Input
+              type="number"
+              label=""
+              value={ numero }
+              name="numero"
+              onChange={ ({ target }) => setNumero(target.value) }
+              testid="customer_checkout__input-addressNumber"
+            />
+          </div>
+            <Button
+              label="FINALIZAR PEDIDO"
+              name="FINALIZAR PEDIDO"
+              testid="customer_checkout__button-submit-order"
+              onClick={ onSubmitOrder }
+              value={ false }
+              id="btn-finish-order"
+            />
+        </div>
+
 
       </form>
     </div>

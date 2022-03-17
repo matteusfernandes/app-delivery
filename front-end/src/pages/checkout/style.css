@@ -1,18 +1,97 @@
-/* .forms {
-  border: 1px solid black;
-  display: grid;
-  margin-left: 30px;
-  margin-top: 50px;
-  width: 53%;
+#btn-finish-order {
+  background-color: #6b6;
+  border: 0;
+  border-radius: 3px;
+  color: white;
+  float: right;
+  font-size: 25px;
+  margin-top: 20px;
+  padding: 6px 25px;
 }
 
-.table {
-  border: 2px solid black;
-  empty-cells: 20;
-  margin-left: 30px;
-  width: 260;
+#btn-remove {
+  background-color: #c66;
+  border: 0;
+  border-radius: 3px;
+  color: white;
+  font-family: $font-bold;
+  font-size: 12px;
+  padding: 4px 8px;
 }
 
-.table td {
-  border: 1px solid black;
-} */
+th {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+.product-title {
+  font-family: Fredoka , sans-serif;
+  margin-right: 20px;
+}
+
+.product-quantity {
+  text-align: center;
+  width: 40px;
+}
+
+.product-price {
+  clear: both;
+  width: 70px;
+}
+
+.product-line-price {
+  width: 70px;
+}
+
+.totals-item {
+  clear: both;
+  float: right;
+  font-family: Fredoka , sans-serif;
+  font-weight: 900;
+  margin: 10px;
+  margin-top: 20px;
+}
+
+
+.row {
+  display: flexbox;
+  flex-wrap: wrap;
+  margin: 30px 3px;
+}
+
+label {
+  display: block;
+  margin: 10px;
+}
+
+.fields {
+  margin: 10px;
+}
+
+.col-50 {
+  flex: 50%;
+}
+
+input {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px;
+  width: 50%;
+}
+
+.custom-select {
+  background-color: #ccc;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  display: block;
+  font-family: Fredoka , sans-serif;
+  height: 34px;
+  width: 30%;
+}
+
+@media screen and ( max-width : 375px ) {
+
+  body {
+    font-size: 0.625rem;
+  }
+}

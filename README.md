@@ -44,6 +44,17 @@ A ideia da sua equipe já pressupõe alguma escalabilidade, dado que foram estab
 - `npm start` (Limpa as portas `3000` e `3001`. Prepara o campo rodando o `Sequelize` para restaurar o banco de dados de testes `(final -test)` e sobe a aplicação com `pm2` em modo `fork` (Uma instância pra cada aplicação). Nesse modo as alterações não são assistidas;)
       - uso (na raiz do projeto);
 
+# 🚧 README em construção 🚧
+<!-- Olá, Tryber!
+Esse é apenas um arquivo inicial para o README do seu projeto.
+É essencial que você preencha esse documento por conta própria, ok?
+Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
+⚠️ IMPORTANTE: você precisa deixar nítido:
+- quais arquivos/pastas foram desenvolvidos por você; 
+- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
+- quais arquivos/pastas foram desenvolvidos pela Trybe.
+-->
+
 # Desenvolvimento do Projeto
 Nesse projeto foi desenvolvida uma aplicação em React que usa Redux como ferramenta de manipulação de estado e consome os dados da API do awesomeapi API de Cotações para realizar a busca de câmbio de moedas: `https://economia.awesomeapi.com.br/json/all`.
 

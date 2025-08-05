@@ -297,3 +297,21 @@ back-end/.env
 **/reports/**/*
 **/coverage
 **/.nyc_output
+
+# Debug e arquivos temporários
+*.md.backup
+*DEBUG*
+*TEMP*
+*EXEMPLO*
+CREDENCIAIS*
+DIAGNOSTICO*
+RESOLVER*
+GUIA*
+MONGODB_SETUP*
+TESTE_*
+STATUS*
+MELHORIAS*
+
+# Arquivos de configuração sensíveis
+.env.local.backup
+.env.backup

@@ -21,7 +21,8 @@ model User {
   updatedAt DateTime @updatedAt
   
   // Relacionamentos
-  orders Order[]
+  orders      Order[]
+  sellerOrders Order[] @relation("SellerOrders")
   
   @@map("users")
 }
@@ -47,6 +48,7 @@ model Product {
 model Order {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
   userId        String      @db.ObjectId
+  sellerId      String      @db.ObjectId
   totalPrice    Float
   deliveryAddress String
   deliveryNumber  String
@@ -63,6 +65,7 @@ model Order {
   
   // Relacionamentos
   user       User        @relation(fields: [userId], references: [id])
+  seller     User        @relation("SellerOrders", fields: [sellerId], references: [id])
   orderItems OrderItem[]
   
   @@map("sales")

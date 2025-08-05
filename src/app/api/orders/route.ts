@@ -53,11 +53,11 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { items, deliveryAddress, deliveryNumber, paymentMethod } = body
+    const { sellerId, deliveryAddress, deliveryNumber, totalPrice, status, products } = body
 
-    if (!items || !Array.isArray(items) || items.length === 0) {
+    if (!products || !Array.isArray(products) || products.length === 0) {
       return NextResponse.json(
-        { error: 'Itens do pedido são obrigatórios' },
+        { error: 'Produtos do pedido são obrigatórios' },
         { status: 400 }
       )
     }
@@ -69,11 +69,30 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Calcular preço total
-    let totalPrice = 0
+    if (!sellerId) {
+      return NextResponse.json(
+        { error: 'Vendedor é obrigatório' },
+        { status: 400 }
+      )
+    }
+
+    // Verificar se o vendedor existe
+    const seller = await prisma.user.findUnique({
+      where: { id: sellerId },
+    })
+
+    if (!seller || (seller.role !== 'SELLER' && seller.role !== 'ADMINISTRATOR')) {
+      return NextResponse.json(
+        { error: 'Vendedor inválido' },
+        { status: 400 }
+      )
+    }
+
+    // Verificar produtos e calcular preço
+    let calculatedTotal = 0
     const orderItems = []
 
-    for (const item of items) {
+    for (const item of products) {
       const product = await prisma.product.findUnique({
         where: { id: item.productId },
       })
@@ -85,8 +104,15 @@ export async function POST(request: NextRequest) {
         )
       }
 
+      if (!product.available) {
+        return NextResponse.json(
+          { error: `Produto ${product.name} não está disponível` },
+          { status: 400 }
+        )
+      }
+
       const itemTotal = product.price * item.quantity
-      totalPrice += itemTotal
+      calculatedTotal += itemTotal
 
       orderItems.push({
         productId: item.productId,
@@ -98,11 +124,11 @@ export async function POST(request: NextRequest) {
     const order = await prisma.order.create({
       data: {
         userId: session.user.id,
-        totalPrice,
+        sellerId: sellerId,
+        totalPrice: calculatedTotal,
         deliveryAddress,
-        deliveryNumber,
-        paymentMethod,
-        status: OrderStatus.PENDING,
+        deliveryNumber: deliveryNumber,
+        status: status === 'Pendente' ? OrderStatus.PENDING : OrderStatus.PENDING,
         paymentStatus: PaymentStatus.PENDING,
         orderItems: {
           create: orderItems,
@@ -112,6 +138,13 @@ export async function POST(request: NextRequest) {
         orderItems: {
           include: {
             product: true,
+          },
+        },
+        seller: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
           },
         },
       },

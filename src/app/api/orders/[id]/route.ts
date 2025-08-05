@@ -1,18 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../../auth/[...nextauth]/route'
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { OrderStatus } from '@prisma/client'
 
 interface Props {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export async function GET(request: NextRequest, { params }: Props) {
   try {
     const session = await getServerSession(authOptions)
+    const { id } = await params
     
     if (!session) {
       return NextResponse.json(
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest, { params }: Props) {
 
     const order = await prisma.order.findUnique({
       where: {
-        id: params.id,
+        id,
       },
       include: {
         orderItems: {
@@ -49,9 +50,27 @@ export async function GET(request: NextRequest, { params }: Props) {
       )
     }
 
+    // Buscar informações do vendedor separadamente usando o sellerId do order
+    let seller = null
+    try {
+      seller = await prisma.user.findUnique({
+        where: {
+          id: (order as any).sellerId, // Cast para any temporariamente
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+        },
+      })
+    } catch (error) {
+      console.error('Erro ao buscar vendedor:', error)
+    }
+
     // Verificar se o usuário tem permissão para ver este pedido
     const canView = 
-      order.userId === session.user.id || // É o dono do pedido
+      (order as any).userId === session.user.id || // É o dono do pedido
       session.user.role === 'SELLER' || // É vendedor
       session.user.role === 'ADMINISTRATOR' // É admin
 
@@ -62,7 +81,13 @@ export async function GET(request: NextRequest, { params }: Props) {
       )
     }
 
-    return NextResponse.json(order)
+    // Adicionar informações do vendedor ao resultado
+    const orderWithSeller = {
+      ...order,
+      seller: seller || { id: '', name: 'Vendedor não encontrado', email: '', role: 'SELLER' }
+    }
+
+    return NextResponse.json(orderWithSeller)
   } catch (error) {
     console.error('Erro ao buscar pedido:', error)
     return NextResponse.json(
@@ -75,6 +100,7 @@ export async function GET(request: NextRequest, { params }: Props) {
 export async function PATCH(request: NextRequest, { params }: Props) {
   try {
     const session = await getServerSession(authOptions)
+    const { id } = await params
     
     if (!session) {
       return NextResponse.json(
@@ -105,7 +131,7 @@ export async function PATCH(request: NextRequest, { params }: Props) {
     // Buscar o pedido primeiro
     const order = await prisma.order.findUnique({
       where: {
-        id: params.id,
+        id,
       },
     })
 
@@ -132,7 +158,7 @@ export async function PATCH(request: NextRequest, { params }: Props) {
     // Atualizar o pedido
     const updatedOrder = await prisma.order.update({
       where: {
-        id: params.id,
+        id,
       },
       data: {
         status,

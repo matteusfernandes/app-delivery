@@ -1,0 +1,7 @@
+<!-- Placeholder SVG -->
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#f3f4f6"/>
+  <rect x="70" y="70" width="60" height="60" rx="6" fill="#d1d5db"/>
+  <path d="M85 95L95 105L115 85L125 95V115H85V95Z" fill="#9ca3af"/>
+  <circle cx="95" cy="90" r="5" fill="#9ca3af"/>
+</svg>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]/route'
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { OrderStatus, PaymentStatus } from '@prisma/client'
 
@@ -124,11 +124,11 @@ export async function POST(request: NextRequest) {
     const order = await prisma.order.create({
       data: {
         userId: session.user.id,
-        sellerId: sellerId,
+        sellerId,
         totalPrice: calculatedTotal,
         deliveryAddress,
-        deliveryNumber: deliveryNumber,
-        status: status === 'Pendente' ? OrderStatus.PENDING : OrderStatus.PENDING,
+        deliveryNumber,
+        status: OrderStatus.PENDING,
         paymentStatus: PaymentStatus.PENDING,
         orderItems: {
           create: orderItems,
@@ -140,13 +140,7 @@ export async function POST(request: NextRequest) {
             product: true,
           },
         },
-        seller: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
+        seller: true,
       },
     })
 

@@ -1,5 +1,6 @@
 'use client'
 
+import { use, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { useRouter } from 'next/navigation'
@@ -95,20 +96,30 @@ const getStatusInfo = (status: string) => {
 }
 
 interface Props {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default function PedidoDetalhesPage({ params }: Props) {
   const { data: session } = useSession()
   const router = useRouter()
   const queryClient = useQueryClient()
+  
+  // Desembrulhar os parâmetros usando React.use()
+  const { id } = use(params)
+
+  // Verificar sessão em useEffect para evitar redirecionamento durante render
+  useEffect(() => {
+    if (session === null) {
+      router.push('/login')
+    }
+  }, [session, router])
 
   const { data: order, isLoading, error } = useQuery<Order>(
-    ['order', params.id],
+    ['order', id],
     async () => {
-      const response = await fetch(`/api/orders/${params.id}`)
+      const response = await fetch(`/api/orders/${id}`)
       if (!response.ok) {
         throw new Error('Erro ao carregar pedido')
       }
@@ -121,7 +132,7 @@ export default function PedidoDetalhesPage({ params }: Props) {
 
   const updateStatusMutation = useMutation(
     async (newStatus: string) => {
-      const response = await fetch(`/api/orders/${params.id}`, {
+      const response = await fetch(`/api/orders/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +148,7 @@ export default function PedidoDetalhesPage({ params }: Props) {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['order', params.id])
+        queryClient.invalidateQueries(['order', id])
         queryClient.invalidateQueries(['orders'])
         toast({
           title: 'Status atualizado',
@@ -158,12 +169,8 @@ export default function PedidoDetalhesPage({ params }: Props) {
     updateStatusMutation.mutate(newStatus)
   }
 
-  if (!session) {
-    router.push('/login')
-    return null
-  }
-
-  if (isLoading) {
+  // Mostrar loading se sessão ainda está carregando
+  if (session === undefined || isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100">
         <div className="container mx-auto px-4 py-8">
@@ -201,6 +208,11 @@ export default function PedidoDetalhesPage({ params }: Props) {
         </div>
       </div>
     )
+  }
+
+  // Se não há sessão após verificar, não renderizar
+  if (!session || !session.user) {
+    return null
   }
 
   const statusInfo = getStatusInfo(order.status)

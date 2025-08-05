@@ -1,13 +1,11 @@
 import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions)
+    console.log('=== PUBLIC SELLERS API ===')
     
-    // Buscar todos os vendedores e administradores
+    // Buscar todos os vendedores e administradores SEM autenticação
     const sellers = await prisma.user.findMany({
       where: {
         OR: [
@@ -26,6 +24,10 @@ export async function GET() {
       }
     })
 
+    console.log('Vendedores encontrados (sem auth):', sellers.length)
+    console.log('Lista de vendedores:', sellers)
+    console.log('===========================')
+    
     return NextResponse.json(sellers)
   } catch (error) {
     console.error('Erro ao buscar vendedores:', error)

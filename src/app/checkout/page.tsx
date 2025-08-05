@@ -17,6 +17,7 @@ interface Seller {
   id: string
   name: string
   email: string
+  role: string
 }
 
 export default function CheckoutPage() {
@@ -29,15 +30,22 @@ export default function CheckoutPage() {
   const [deliveryNumber, setDeliveryNumber] = useState('')
   const [sellers, setSellers] = useState<Seller[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isInitialLoading, setIsInitialLoading] = useState(true)
+  const [isSubmittingOrder, setIsSubmittingOrder] = useState(false)
 
   // Buscar vendedores
   useEffect(() => {
     const fetchSellers = async () => {
       try {
-        const response = await fetch('/api/sellers')
+        const response = await fetch('/api/sellers', {
+          credentials: 'include'
+        })
+        
         if (response.ok) {
           const sellersData = await response.json()
           setSellers(sellersData)
+        } else {
+          console.error('Erro ao buscar vendedores:', response.status, response.statusText)
         }
       } catch (error) {
         console.error('Erro ao buscar vendedores:', error)
@@ -45,21 +53,34 @@ export default function CheckoutPage() {
     }
 
     fetchSellers()
+  }, [session])
+
+  // Aguardar a sessão carregar antes de redirecionar
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false)
+    }, 3000) // Aumentado para 3 segundos
+
+    return () => clearTimeout(timer)
   }, [])
 
-  // Redirecionar se não estiver logado
+  // Redirecionar se não estiver logado (após aguardar)
   useEffect(() => {
-    if (!session) {
+    if (!isInitialLoading && !session) {
       router.push('/login')
     }
-  }, [session, router])
+  }, [session, router, isInitialLoading])
 
-  // Redirecionar se carrinho vazio
+  // Redirecionar se carrinho vazio (após aguardar) - mas não se está submetendo pedido
   useEffect(() => {
-    if (cartState.items.length === 0) {
-      router.push('/produtos')
+    if (!isInitialLoading && cartState.items.length === 0 && !isSubmittingOrder) {
+      const timer = setTimeout(() => {
+        router.push('/produtos')
+      }, 1000)
+      
+      return () => clearTimeout(timer)
     }
-  }, [cartState.items.length, router])
+  }, [cartState.items.length, router, isInitialLoading, isSubmittingOrder])
 
   const updateItemQuantity = (itemId: string, newQuantity: number) => {
     if (newQuantity <= 0) {
@@ -103,12 +124,13 @@ export default function CheckoutPage() {
     }
 
     setIsLoading(true)
+    setIsSubmittingOrder(true)
 
     try {
       const orderData = {
         sellerId: selectedSeller,
         deliveryAddress: deliveryAddress.trim(),
-        deliveryNumber: parseInt(deliveryNumber),
+        deliveryNumber: deliveryNumber.trim(),
         totalPrice: cartState.totalPrice,
         status: 'Pendente',
         products: cartState.items.map(item => ({
@@ -133,11 +155,13 @@ export default function CheckoutPage() {
         
         toast({
           title: 'Pedido realizado com sucesso!',
-          description: `Seu pedido #${order.id} foi criado e está sendo processado.`,
+          description: `Seu pedido #${order.id.slice(-8)} foi criado e está sendo processado.`,
         })
         
-        // Redirecionar para página de pedidos
-        router.push(`/pedidos/${order.id}`)
+        // Aguardar um pouco antes de redirecionar para evitar redirecionamento rápido demais
+        setTimeout(() => {
+          router.push(`/checkout/confirmacao/${order.id}`)
+        }, 1500)
       } else {
         const error = await response.json()
         throw new Error(error.message || 'Erro ao criar pedido')
@@ -152,6 +176,17 @@ export default function CheckoutPage() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (isInitialLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <h2 className="text-2xl font-semibold text-primary-800">Carregando...</h2>
+        </div>
+      </div>
+    )
   }
 
   if (!session || cartState.items.length === 0) {
@@ -254,17 +289,35 @@ export default function CheckoutPage() {
               <CardContent>
                 <form onSubmit={handleSubmitOrder} className="space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="seller">Vendedor Responsável</Label>
+                    <Label htmlFor="seller">
+                      Vendedor Responsável 
+                      {sellers.length > 0 && (
+                        <span className="text-sm text-primary-600 ml-2">
+                          ({sellers.length} disponível{sellers.length !== 1 ? 'eis' : ''})
+                        </span>
+                      )}
+                    </Label>
+                    
                     <Select value={selectedSeller} onValueChange={setSelectedSeller}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione um vendedor" />
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder={
+                          sellers.length === 0 
+                            ? "Carregando vendedores..." 
+                            : "Selecione um vendedor"
+                        } />
                       </SelectTrigger>
                       <SelectContent>
-                        {sellers.map((seller) => (
-                          <SelectItem key={seller.id} value={seller.id}>
-                            {seller.name}
+                        {sellers.length === 0 ? (
+                          <SelectItem value="loading" disabled>
+                            Nenhum vendedor disponível
                           </SelectItem>
-                        ))}
+                        ) : (
+                          sellers.map((seller) => (
+                            <SelectItem key={seller.id} value={seller.id}>
+                              {seller.name} ({seller.role === 'ADMINISTRATOR' ? 'Admin' : 'Vendedor'})
+                            </SelectItem>
+                          ))
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
